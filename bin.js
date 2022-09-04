@@ -7,6 +7,11 @@ import glob from 'tiny-glob'
 
 const CWD = process.cwd()
 
+const die = message => {
+	console.log(message)
+	process.exit(1)
+}
+
 const readJson = async filepath => {
 	try {
 		return JSON.parse(await readFile(filepath, 'utf8'))
@@ -16,11 +21,13 @@ const readJson = async filepath => {
 }
 
 const removeFalse = obj => {
-	for (const key in obj) if (obj[key] === false) delete obj[key]
+	for (const key in obj) if (obj[key] === false || obj[key] === null) delete obj[key]
 	return obj
 }
 
-const { mrln: { prefix, links, root, folder } } = await readJson('./package.json')
+const rootPkg = await readJson('package.json')
+if (!rootPkg?.mrln) die('No "mrln" property found in package.json file.')
+const { prefix, links, root, folder } = rootPkg.mrln
 
 const makeLinks = async ({ linkDir, isRoot, map }) => {
 	const pkgList = Object.keys(map)

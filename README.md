@@ -37,7 +37,7 @@ After you run `npm install` or `npm ci` the symlinks will get created.
 
 ## Example
 
-Look in the [./example](example folder) for a normal monorepo setup.
+Look in the [example folder](https://github.com/saibotsivad/mrln/tree/main/demo) for a sample monorepo setup.
 
 ## Summary
 
@@ -271,7 +271,7 @@ For example, runtime environment specific mappings might be:
 ```
 Which would map `import '@/runtime/crypto.js` to `_runtime/nodejs/crypto.js` file.
 
-To *remove* a mapping from the repo's overall `root` mappings, simply set the value in the application's `root` key to `null`, e.g.:
+To *remove* a mapping from the repo's overall `root` mappings, simply set the value in the application's `root` key to `null` or `false`, e.g.:
 
 ```
 "mrln": {
