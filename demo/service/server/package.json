@@ -1,0 +1,10 @@
+{
+  "name": "server",
+  "private": true,
+  "type": "module",
+  "mrln": {
+    "root": {
+      "runtime": "_runtime/nodejs"
+    }
+  }
+}

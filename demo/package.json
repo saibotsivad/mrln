@@ -1,0 +1,21 @@
+{
+  "name": "demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "mrln",
+    "demo": "node demo/script/run-service1-main.js"
+  },
+  "mrln": {
+    "prefix": "@",
+    "links": [
+      "service/*/package.json"
+    ],
+    "root": {
+      "shared": "_shared"
+    },
+    "folder": {
+      "lib": "_lib"
+    }
+  }
+}

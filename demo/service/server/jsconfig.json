@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"paths": {
+			"@/lib/*": [
+				"_lib/*"
+			],
+			"@/runtime/*": [
+				"../../_runtime/nodejs/*"
+			],
+			"@/shared/*": [
+				"../../_shared/*"
+			]
+		},
+		"rootDirs": [
+			"./"
+		],
+		"moduleResolution": "node",
+		"module": "es6",
+		"target": "es6"
+	}
+}

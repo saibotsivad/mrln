@@ -7,8 +7,5 @@
 /configuration.sh
 /fiddle.js
 
-# globbed things
-globbed-*.js
-
-# built things
-/dist
+# the demo ignorables
+/demo/**/node_modules
