@@ -32,6 +32,9 @@ const makeLinks = async ({ linkDir, isRoot, map }) => {
 				? map[toMake]
 				: join(linkDir, map[toMake])
 			await symlink(join(CWD, original), join(CWD, sym), { type: 'junction' })
+				.catch(error => {
+					if (error.code !== 'EEXIST') throw error
+				})
 		}
 	}
 }

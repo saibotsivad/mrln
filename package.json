@@ -1,12 +1,12 @@
 {
   "name": "mrln",
-  "version": "0.0.0",
+  "version": "1.0.0-prerelease",
   "description": "Mono Repo ln (symlink).",
   "type": "module",
   "bin": "bin.js",
   "scripts": {
     "test": "eslint bin.js 'demo/**/*.js'",
-    "demo": "cd demo && ../bin.js"
+    "demo": "cd demo && ../bin.js && node script/run-service1-main.js"
   },
   "repository": {
     "type": "git",

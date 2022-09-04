@@ -9,3 +9,4 @@
 
 # the demo ignorables
 /demo/**/node_modules
+/demo/example.json

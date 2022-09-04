@@ -1,4 +1,4 @@
-import { saveJson } from '@/runtime/save-json'
+import { saveJson } from '@/runtime/save-json.js'
 import { makeBig } from '@/lib/make-big.js'
 import { toBase64 } from '@/shared/strings.js'
 import { makeSmall } from '@/lib/deeper/strings.js'
