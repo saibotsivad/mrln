@@ -6,7 +6,7 @@
   "bin": "bin.js",
   "scripts": {
     "test": "eslint bin.js 'demo/**/*.js'",
-    "demo": "cd demo && ../bin.js && node script/run-service1-main.js"
+    "demo": "cd demo && ../bin.js --jsconfig && node script/run-service1-main.js"
   },
   "repository": {
     "type": "git",

@@ -15,6 +15,18 @@
     },
     "folder": {
       "lib": "_lib"
+    },
+    "jsconfig": {
+      "auto": true,
+      "indent": "\t",
+      "compilerOptions": {
+        "rootDirs": [
+          "./"
+        ],
+        "moduleResolution": "node",
+        "module": "es6",
+        "target": "es6"
+      }
     }
   }
 }
