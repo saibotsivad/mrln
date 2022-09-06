@@ -20,7 +20,7 @@ There's really only one command:
 mrln
 ```
 
-You can add the command in your CI script and document it for local development, but you should probably to add it as a `postinstall` script in your repo:
+You can add the command in your CI script and document it for local development, but you should probably add it as a `postinstall` script in your repo:
 
 ```json
 {
@@ -35,6 +35,8 @@ You can add the command in your CI script and document it for local development,
 
 After you run `npm install` or `npm ci` the symlinks will get created.
 
+> Note: see toward the end of this document for automatic `jsconfig.json` file updates. These are not required, but can make your IDE experience nicer.
+
 ## Example
 
 Look in the [example folder](https://github.com/saibotsivad/mrln/tree/main/demo) for a sample monorepo setup.
@@ -45,8 +47,8 @@ In your repo you have folders that contain:
 
 * Code shared with all projects,
 * Code specific to a runtime environment (e.g. NodeJS vs Browser vs ServiceWorker),
-* Other bits of code, I don't know,
-* Code specific to a service / application / etc.
+* Code specific to a service / application / etc,
+* Other bits of code... `mrln` doesn't really care about your preferred folder organization.
 
 Suppose you have a folder setup like this:
 
