@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-import { dirname, join } from 'node:path'
-import { readFile, mkdir, symlink } from 'node:fs/promises'
+import { dirname, join, relative } from 'node:path'
+import { readFile, mkdir, symlink, writeFile } from 'node:fs/promises'
 
 import glob from 'tiny-glob'
 
 const CWD = process.cwd()
+const UPDATE_JSCONFIG = !!process.argv.includes('--jsconfig')
 
 const die = message => {
 	console.log(message)
@@ -20,6 +21,8 @@ const readJson = async filepath => {
 	}
 }
 
+const clone = obj => JSON.parse(JSON.stringify(obj)) // not the fastest, but fine for this
+
 const removeFalse = obj => {
 	for (const key in obj) if (obj[key] === false || obj[key] === null) delete obj[key]
 	return obj
@@ -27,7 +30,7 @@ const removeFalse = obj => {
 
 const rootPkg = await readJson('package.json')
 if (!rootPkg?.mrln) die('No "mrln" property found in package.json file.')
-const { prefix, links, root, folder } = rootPkg.mrln
+const { prefix, links, root, folder, jsconfig } = rootPkg.mrln
 
 const makeLinks = async ({ linkDir, isRoot, map }) => {
 	const pkgList = Object.keys(map)
@@ -46,6 +49,29 @@ const makeLinks = async ({ linkDir, isRoot, map }) => {
 	}
 }
 
+const updateJsconfig = async ({ linkDir, linkRoot, linkFolder }) => {
+	const existing = await readJson(join(linkDir, 'jsconfig.json'))
+	const updatedCompilerOptions = Object.assign(
+		{ paths: {} },
+		existing.compilerOptions || {},
+		clone(jsconfig?.compilerOptions || {}),
+	)
+	for (const name in linkRoot) {
+		const importable = `${prefix}/${name}/*`
+		const paths = updatedCompilerOptions.paths[importable] || []
+		paths.push(`${relative(join(CWD, linkDir), CWD)}/${linkRoot[name]}/*`)
+		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
+	}
+	for (const name in linkFolder) {
+		const importable = `${prefix}/${name}/*`
+		const paths = updatedCompilerOptions.paths[importable] || []
+		paths.push(`${linkFolder[name]}/*`)
+		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
+	}
+	existing.compilerOptions = updatedCompilerOptions
+	await writeFile(join(linkDir, 'jsconfig.json'), JSON.stringify(existing, undefined, jsconfig?.indent || 2) + '\n')
+}
+
 let linkables = new Set()
 for (const l of links)
 	for (const g of (await glob(l))) linkables.add(g)
@@ -60,5 +86,6 @@ for (const link of linkables) {
 		await mkdir(join(linkDir, 'node_modules', prefix), { recursive: true })
 		await makeLinks({ linkDir, isRoot: true, map: linkRoot })
 		await makeLinks({ linkDir, isRoot: false, map: linkFolder })
+		if (UPDATE_JSCONFIG) await updateJsconfig({ linkDir, linkRoot, linkFolder })
 	}
 }
