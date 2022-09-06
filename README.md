@@ -28,7 +28,7 @@ You can add the command in your CI script and document it for local development,
     "postinstall": "mrln"
   },
   "dependencies": {
-  	"mrln": "^1.0.0"
+    "mrln": "^1.0.0"
   }
 }
 ```
@@ -46,60 +46,60 @@ In your repo you have folders that contain:
 * Code shared with all projects,
 * Code specific to a runtime environment (e.g. NodeJS vs Browser vs ServiceWorker),
 * Other bits of code, I don't know,
-* Code specific to a service / application /etc.
+* Code specific to a service / application / etc.
 
 Suppose you have a folder setup like this:
 
 ```
 # Runtime independent code for all applications:
 /shared
-	/strings.js
-		# export const lowercase = string => string.toLowerCase()
+  /strings.js
+    # export const lowercase = string => string.toLowerCase()
 
 # Runtime specific code for all applications:
 /runtime
-	/nodejs
-		/crypto.js
-			# import { webcrypto } from 'node:crypto'
-			# const grv = webcrypto.getRandomValues
-			# export { grv as getRandomValues }
-	/browser
-		/crypto.js
-			# export const { getRandomValues } = globalThis.crypto
+  /nodejs
+    /crypto.js
+      # import { webcrypto } from 'node:crypto'
+      # const grv = webcrypto.getRandomValues
+      # export { grv as getRandomValues }
+  /browser
+    /crypto.js
+      # export const { getRandomValues } = globalThis.crypto
 
 # An example application:
 /apps
-	/server
-		/lib
-			/strings.js
-				# export const toInt = string => parseInt(string, 10)
-		/package.json
-		/app.js
-	/webapp
-		# Available to any code in this application:
-		/lib
-			/strings.js
-				# export const uppercase = string => string.toUpperCase()
-		/package.json
-		/app.js
+  /server
+    /lib
+      /strings.js
+        # export const toInt = string => parseInt(string, 10)
+    /package.json
+    /app.js
+  /webapp
+    # Available to any code in this application:
+    /lib
+      /strings.js
+        # export const uppercase = string => string.toUpperCase()
+    /package.json
+    /app.js
 ```
 
 Depending on configuration, running `mrln` might produce these symlinks:
 
 ```
 /apps
-	/server
-		/node_modules
-			/@
-				/lib => /apps/server/lib
-				/runtime => /runtime/nodejs
-				/shared => /shared
-	/webapp
-		/node_modules
-			/@
-				/lib => /apps/webapp/lib
-				/runtime => /runtime/browser
-				/shared => /shared
+  /server
+    /node_modules
+      /@
+        /lib => /apps/server/lib
+        /runtime => /runtime/nodejs
+        /shared => /shared
+  /webapp
+    /node_modules
+      /@
+        /lib => /apps/webapp/lib
+        /runtime => /runtime/browser
+        /shared => /shared
 ```
 
 Then from inside `/apps/server/app.js` you could do:
@@ -133,7 +133,7 @@ Configuration is inside the `package.json` file under an object named `mrln`, e.
   "name": "my-mono-repo",
   "private": true,
   "mrln": {
-	  "...": "..."
+    "...": "..."
   }
 }
 ```
@@ -179,11 +179,11 @@ For example, if you had a folder structure like this:
 
 ```
 /_common
-	/foo.js
+  /foo.js
 /apps
-	/browser
-		/main.js
-		/package.json
+  /browser
+    /main.js
+    /package.json
 ```
 
 And if you wanted the `main.js` file to be able to do `import '@/shared/foo.js'` than in the `package.json` of the "application" you would have:
@@ -200,10 +200,10 @@ Which would create a symlink like this:
 
 ```
 /apps
-	/browser
-		/node_modules
-			/@
-				/shared => /_common
+  /browser
+    /node_modules
+      /@
+        /shared => /_common
 ```
 
 These symlinks would be created in *all* "applications", if the root folder exists.
@@ -218,11 +218,11 @@ For example, if you had a folder structure like this:
 
 ```
 /apps
-	/browser
-		/_lib
-			/widget.js
-		/main.js
-		/package.json
+  /browser
+    /_lib
+      /widget.js
+    /main.js
+    /package.json
 ```
 
 And if you wanted the `main.js` file to be able to do `import '@/lib/widger.js'` than in the `package.json` of the "application" you would have:
@@ -239,10 +239,10 @@ Which would create a symlink like this:
 
 ```
 /apps
-	/browser
-		/node_modules
-			/@
-				/lib => /apps/browser/_lib
+  /browser
+    /node_modules
+      /@
+        /lib => /apps/browser/_lib
 ```
 
 These symlinks would be created in *all* "applications", if the folder exists for that "application". (E.g., you can have `lib => _libs` in the root `package.json` and if the "application" doesn't have a `_lib` folder the symlink won't get made.)
@@ -289,11 +289,11 @@ For example, if you had a folder structure like this:
 
 ```
 /apps
-	/browser
-		/_ui
-			/Widget.js
-		/main.js
-		/package.json
+  /browser
+    /_ui
+      /Widget.js
+    /main.js
+    /package.json
 ```
 
 And if you wanted the `main.js` file to be able to do `import '@/ui/Widget.js'` than in the `package.json` of the "application" you would have:
@@ -310,10 +310,10 @@ Which would create a symlink like this:
 
 ```
 /apps
-	/browser
-		/node_modules
-			/@
-				/ui => /apps/browser/_ui
+  /browser
+    /node_modules
+      /@
+        /ui => /apps/browser/_ui
 ```
 
 To *remove* a mapping from the repo's overall `folder` mappings, simply set the value in the application's `folder` key to `null`, e.g.:
@@ -322,6 +322,68 @@ To *remove* a mapping from the repo's overall `folder` mappings, simply set the 
 "mrln": {
   "folder": {
     "shared": null
+  }
+}
+```
+
+## Help With `jsconfig.json`
+
+The [jsconfig.json](https://code.visualstudio.com/docs/languages/jsconfig) file is used by many IDEs to help with code introspection. In particular, inside most IDEs you can use some shortcut to go to the implementation of something, and the `jsconfig.json` file can be used to inform the IDE of how to interpret things like `'@/lib/string.js'` to a specific folder.
+
+For example, if your "application" maps `@/lib/string.js` to `_lib` relative to its own folder, your `jsconfig.json` file might have these properties:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/lib/*": [
+        "_lib/*"
+      ]
+    },
+    "rootDirs": [
+      "./"
+    ],
+    "moduleResolution": "node",
+    "module": "es6",
+    "target": "es6"
+  }
+}
+```
+
+You can use `mrln` to automatically add new mappings to your `jsconfig.json` file, e.g. if you add a `_lib` folder, and you want it added to `compilerOptions.paths` automatically.
+
+You will need to add a property to the root `package.json`s `mrln` configuration:
+
+```json
+{
+  "mrln": {
+    "jsconfig": {
+      "auto": true,
+      "indent": "\t"
+    }
+  }
+}
+```
+
+The `auto` property must be set to `true`, and the `indent` is the exact value passed as the third parameter to the `JSON.stringify` call, e.g. for 2 spaces `"indent": 2`
+
+You can also add a `compilerOptions` property, which will be used to pre-fill the `jsconfig.json` file's `compilerOptions` property, e.g.:
+
+```json
+{
+  "mrln": {
+    "jsconfig": {
+      "auto": true,
+      "indent": "\t",
+      "compilerOptions": {
+        "rootDirs": [
+          "./"
+        ],
+        "moduleResolution": "node",
+        "module": "es6",
+        "target": "es6"
+      }
+    }
   }
 }
 ```
