@@ -22,6 +22,11 @@ Change categories are:
 ### Removed
 ### Security
 
+## [1.0.0](https://github.com/saibotsivad/mrln/compare/v0.0.0...v1.0.0) - 2022-09-05
+### Added
+- All the main symlink functionality.
+- A nice helper to set up `jsconfig.json` files.
+
 ## [0.0.0](https://github.com/saibotsivad/mrln/tree/v0.0.0) - 2022-09-03
 ### Added
 - Created the base project from [saibotsivad/init](https://github.com/saibotsivad/init).
