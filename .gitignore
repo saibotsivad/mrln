@@ -9,4 +9,5 @@
 
 # the demo ignorables
 /demo/**/node_modules
+/demo/**/jsconfig.json
 /demo/example.json
