@@ -22,6 +22,11 @@ Change categories are:
 ### Removed
 ### Security
 
+## [1.0.1](https://github.com/saibotsivad/mrln/compare/v1.0.0...v1.0.1) - 2022-09-06
+### Change
+- Updated documentation for clarity.
+- Update demo to show more things.
+
 ## [1.0.0](https://github.com/saibotsivad/mrln/compare/v0.0.0...v1.0.0) - 2022-09-05
 ### Added
 - All the main symlink functionality.
