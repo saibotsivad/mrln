@@ -28,8 +28,7 @@
   },
   "homepage": "https://github.com/saibotsivad/mrln",
   "devDependencies": {
-    "@saibotsivad/eslint-config-saibotsivad": "*",
-    "eslint": "^8.22.0"
+    "@saibotsivad/eslint-config-saibotsivad": "*"
   },
   "dependencies": {
     "tiny-glob": "^0.2.9"
