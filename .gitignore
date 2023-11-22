@@ -6,6 +6,7 @@
 /configuration.js
 /configuration.sh
 /fiddle.js
+/video-example
 
 # the demo ignorables
 /demo/**/node_modules
