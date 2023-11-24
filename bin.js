@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { dirname, join, relative } from 'node:path'
-import { readFile, mkdir, symlink, writeFile } from 'node:fs/promises'
+import { readFile, readlink, mkdir, symlink, writeFile } from 'node:fs/promises'
 
 import glob from 'tiny-glob'
 
@@ -32,7 +32,25 @@ const rootPkg = await readJson('package.json')
 if (!rootPkg?.mrln) die('No "mrln" property found in package.json file.')
 const { prefix, links, root, folder, jsconfig } = rootPkg.mrln
 
+const logBadSymlink = (symlinkAbsolutePath, relativeSymlinkPath, existing) => console.error(`
+Found an existing symlink, but it points to an unexpected location.
+
+Location: ${symlinkAbsolutePath}
+Desired:  ${relativeSymlinkPath}
+Existing: ${existing}
+`)
+
 const makeLinks = async ({ linkDir, isRoot, map }) => {
+
+	let anyBadExisting = false
+	const checkExistingSymlink = async (symlinkAbsolutePath, relativeSymlinkPath) => {
+		const existing = await readlink(symlinkAbsolutePath)
+		if (existing !== relativeSymlinkPath) {
+			logBadSymlink(symlinkAbsolutePath, relativeSymlinkPath, existing)
+			anyBadExisting = true
+		}
+	}
+
 	const pkgList = Object.keys(map)
 	if (pkgList.length) {
 		for (const toMake of pkgList) {
@@ -41,12 +59,17 @@ const makeLinks = async ({ linkDir, isRoot, map }) => {
 			const original = isRoot
 				? map[toMake]
 				: join(linkDir, map[toMake])
-			await symlink(join(CWD, original), join(CWD, sym), { type: 'junction' })
+			const symlinkAbsolutePath = join(CWD, sym)
+			const relativeSymlinkPath = relative(join(CWD, sym, '..'), join(CWD, original))
+			await symlink(relativeSymlinkPath, symlinkAbsolutePath, { type: 'junction' })
 				.catch(error => {
-					if (error.code !== 'EEXIST') throw error
+					if (error.code === 'EEXIST') return checkExistingSymlink(symlinkAbsolutePath, relativeSymlinkPath)
+					else throw error
 				})
 		}
 	}
+
+	if (anyBadExisting) throw new Error('Existing symlink points to unexpected location.')
 }
 
 const updateJsconfig = async ({ linkDir, linkRoot, linkFolder }) => {

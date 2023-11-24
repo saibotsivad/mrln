@@ -1,12 +1,13 @@
 {
   "name": "mrln",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Mono Repo ln (symlink).",
   "type": "module",
   "bin": "bin.js",
   "scripts": {
     "test": "eslint bin.js 'demo/**/*.js'",
-    "demo": "cd demo && ../bin.js --jsconfig && node script/run-service1-main.js"
+    "demo-setup": "cd demo && ../bin.js --jsconfig",
+    "demo-run": "cd demo && node script/run-service1-main.js"
   },
   "repository": {
     "type": "git",
@@ -28,8 +29,7 @@
   },
   "homepage": "https://github.com/saibotsivad/mrln",
   "devDependencies": {
-    "@saibotsivad/eslint-config-saibotsivad": "*",
-    "eslint": "^8.22.0"
+    "@saibotsivad/eslint-config-saibotsivad": "*"
   },
   "dependencies": {
     "tiny-glob": "^0.2.9"

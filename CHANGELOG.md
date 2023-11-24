@@ -14,13 +14,13 @@ Change categories are:
 * `Fixed` for any bug fixes.
 * `Security` to invite users to upgrade in case of vulnerabilities.
 
-## [Unreleased]
-### Added
-### Changed
-### Deprecated
-### Fixed
-### Removed
-### Security
+## [2.0.0](https://github.com/saibotsivad/mrln/compare/v1.0.1...v2.0.0) - 2023-11-23
+### Change
+- **BREAKING:** If an existing symlink is found and it doesn't match the computed, an error will be thrown.
+- **BREAKING:** Using relative symlinks instead of absolute.
+- Migration path:
+  - If you have not committed symlinks accidentally, nothing in normal CI/CD needs to change.
+  - For local development, you will need to delete existing symlinks, since v1.0.1 pointed them to an absolute path.
 
 ## [1.0.1](https://github.com/saibotsivad/mrln/compare/v1.0.0...v1.0.1) - 2022-09-06
 ### Change
