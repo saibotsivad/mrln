@@ -1,6 +1,6 @@
 {
   "name": "mrln",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Mono Repo ln (symlink).",
   "type": "module",
   "bin": "bin.js",
@@ -28,10 +28,11 @@
     "url": "https://github.com/saibotsivad/mrln/issues"
   },
   "homepage": "https://github.com/saibotsivad/mrln",
-  "devDependencies": {
-    "@saibotsivad/eslint-config-saibotsivad": "*"
-  },
   "dependencies": {
     "tiny-glob": "^0.2.9"
+  },
+  "devDependencies": {
+    "@tobiaslabs/eslint-config-javascript": "^1.0.0",
+    "eslint": "^9.37.0"
   }
 }
