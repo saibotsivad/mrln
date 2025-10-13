@@ -4,7 +4,7 @@ import { dirname, join, relative } from 'node:path'
 import { readFile, readlink, mkdir, symlink, writeFile } from 'node:fs/promises'
 
 // Although Node.js has `fsPromises.glob`, it's only available in 22+ but
-// for now I'm committing to 16+ and `tiny-glob` maintains support back
+// for now I'm committing to 18+ and `tiny-glob` maintains support back
 // that far, so we're sticking with it.
 // https://github.com/terkelg/tiny-glob/blob/master/.github/workflows/ci.yml#L20
 // https://nodejs.org/api/fs.html#fspromisesglobpattern-options
@@ -89,13 +89,13 @@ const updateJsconfig = async ({ linkDir, linkRoot, linkFolder }) => {
 		const importable = `${prefix}/${name}/*`
 		const paths = updatedCompilerOptions.paths[importable] || []
 		paths.push(`${relative(join(CWD, linkDir), CWD)}/${linkRoot[name]}/*`)
-		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
+		updatedCompilerOptions.paths[importable] = [...new Set(paths)]
 	}
 	for (const name in linkFolder) {
 		const importable = `${prefix}/${name}/*`
 		const paths = updatedCompilerOptions.paths[importable] || []
 		paths.push(`${linkFolder[name]}/*`)
-		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
+		updatedCompilerOptions.paths[importable] = [...new Set(paths)]
 	}
 	existing.compilerOptions = updatedCompilerOptions
 	await writeFile(join(linkDir, 'jsconfig.json'), JSON.stringify(existing, undefined, jsconfig?.indent || 2) + '\n')

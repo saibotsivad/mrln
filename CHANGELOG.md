@@ -14,6 +14,13 @@ Change categories are:
 * `Fixed` for any bug fixes.
 * `Security` to invite users to upgrade in case of vulnerabilities.
 
+## [3.0.0](https://github.com/saibotsivad/mrln/compare/v2.0.0...v3.0.0) - 2025-10-13
+### Change
+- **BREAKING:** Dropping support for Node.js 16.x due to high effort to maintain compatability.
+- Added explicit support for Node.js 22.x and 24.x
+### Fix
+- Use of `fsPromises.symlink` type switched from `{ type: 'junction' }` to `'junction'` since late 2023, so that's fixed now.
+
 ## [2.0.0](https://github.com/saibotsivad/mrln/compare/v1.0.1...v2.0.0) - 2023-11-23
 ### Change
 - **BREAKING:** If an existing symlink is found and it doesn't match the computed, an error will be thrown.
