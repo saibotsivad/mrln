@@ -89,13 +89,13 @@ const updateJsconfig = async ({ linkDir, linkRoot, linkFolder }) => {
 		const importable = `${prefix}/${name}/*`
 		const paths = updatedCompilerOptions.paths[importable] || []
 		paths.push(`${relative(join(CWD, linkDir), CWD)}/${linkRoot[name]}/*`)
-		updatedCompilerOptions.paths[importable] = [...new Set(paths)]
+		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
 	}
 	for (const name in linkFolder) {
 		const importable = `${prefix}/${name}/*`
 		const paths = updatedCompilerOptions.paths[importable] || []
 		paths.push(`${linkFolder[name]}/*`)
-		updatedCompilerOptions.paths[importable] = [...new Set(paths)]
+		updatedCompilerOptions.paths[importable] = [ ...new Set(paths) ]
 	}
 	existing.compilerOptions = updatedCompilerOptions
 	await writeFile(join(linkDir, 'jsconfig.json'), JSON.stringify(existing, undefined, jsconfig?.indent || 2) + '\n')
