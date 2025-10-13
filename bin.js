@@ -3,6 +3,11 @@
 import { dirname, join, relative } from 'node:path'
 import { readFile, readlink, mkdir, symlink, writeFile } from 'node:fs/promises'
 
+// Although Node.js has `fsPromises.glob`, it's only available in 22+ but
+// for now I'm committing to 16+ and `tiny-glob` maintains support back
+// that far, so we're sticking with it.
+// https://github.com/terkelg/tiny-glob/blob/master/.github/workflows/ci.yml#L20
+// https://nodejs.org/api/fs.html#fspromisesglobpattern-options
 import glob from 'tiny-glob'
 
 const CWD = process.cwd()
@@ -16,6 +21,7 @@ const die = message => {
 const readJson = async filepath => {
 	try {
 		return JSON.parse(await readFile(filepath, 'utf8'))
+		// eslint-disable-next-line no-unused-vars
 	} catch (ignore) {
 		return {}
 	}
@@ -61,7 +67,7 @@ const makeLinks = async ({ linkDir, isRoot, map }) => {
 				: join(linkDir, map[toMake])
 			const symlinkAbsolutePath = join(CWD, sym)
 			const relativeSymlinkPath = relative(join(CWD, sym, '..'), join(CWD, original))
-			await symlink(relativeSymlinkPath, symlinkAbsolutePath, { type: 'junction' })
+			await symlink(relativeSymlinkPath, symlinkAbsolutePath, 'junction')
 				.catch(error => {
 					if (error.code === 'EEXIST') return checkExistingSymlink(symlinkAbsolutePath, relativeSymlinkPath)
 					else throw error

@@ -394,4 +394,4 @@ You can also add a `compilerOptions` property, which will be used to pre-fill th
 
 Published and released under the [Very Open License](http://veryopenlicense.com).
 
-If you need a commercial license, [contact me here](https://davistobias.com/license?software=mrln).
+If you need a commercial license, [contact me](mailto:office@tobiaslabs.com?subject=Library%20License%20-%20mrln).
